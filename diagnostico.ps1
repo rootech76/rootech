@@ -34,6 +34,7 @@ Write-Host ""
 Write-Host "===================================="
 Write-Host "RECOLECTANDO DATOS DE RENDIMIENTO"
 Write-Host "60 SEGUNDOS DE MUESTRA"
+Write-Host "Espere, por favor ...!!!"
 Write-Host "===================================="
 Write-Host ""
 
