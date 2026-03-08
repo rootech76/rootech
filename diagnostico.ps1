@@ -38,14 +38,14 @@ Write-Host "===================================="
 Write-Host ""
 
 $counters = @(
-'\Processor(_Total)\% Processor Time',
-'\Memory\Available MBytes',
-'\Memory\Pages/sec',
-'\Memory\Page Faults/sec',
-'\PhysicalDisk(_Total)\% Disk Time',
-'\PhysicalDisk(_Total)\Avg. Disk sec/Transfer',
-'\PhysicalDisk(_Total)\Disk Read Bytes/sec',
-'\PhysicalDisk(_Total)\Disk Write Bytes/sec'
+'\Processador(_Total)\% tempo de processador',
+'\memória\Bytes disponíveis',
+'\memória\Páginas/s',
+'\memória\Falhas de páginas/s',
+'\PhysicalDisk(_Total)\% tempo de disco',
+'\PhysicalDisk(_Total)\Média de bytes de disco/transferência',
+'\PhysicalDisk(_Total)\Média de bytes de disco/leitura',
+'\PhysicalDisk(_Total)\Média de bytes de disco/gravação'
 )
 
 $data = Get-Counter -Counter $counters -SampleInterval 1 -MaxSamples 60
