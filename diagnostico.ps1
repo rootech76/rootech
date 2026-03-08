@@ -45,15 +45,15 @@ Write-Host "RECOLECTANDO CONTADORES (60 SEG)"
 Write-Host "===================================="
 
 $counters = @(
-'\Processor(_Total)\% Processor Time',
-'\Memory\Available MBytes',
-'\Memory\Pages/sec',
-'\Memory\Page Faults/sec',
-'\PhysicalDisk(_Total)\% Disk Time',
-'\PhysicalDisk(_Total)\Avg. Disk sec/Transfer',
-'\PhysicalDisk(_Total)\Disk Read Bytes/sec',
-'\PhysicalDisk(_Total)\Disk Write Bytes/sec',
-'\Network Interface(*)\Bytes Total/sec'
+'\Processo(_Total)\% Tempo de Processador',
+'\Memória\MBytes disponíveis',
+'\Memória\Páginas/s',
+'\Memória\Falhas de páginas/s',
+'\PhysicalDisk(_Total)\% Tempo de Disco',
+'\PhysicalDisk(_Total)\Média de bytes de disco/transferência',
+'\PhysicalDisk(_Total)\Bytes de leitura de disco/s',
+'\PhysicalDisk(_Total)\Bytes de gravação de disco/s',
+'\Network Interface(*)\Total de bytes/s'
 )
 
 # Verificar contadores disponibles
