@@ -1,20 +1,20 @@
 Clear-Host
 
 Write-Host "===================================="
-Write-Host "DIAGNOSTICO DE RENDIMIENTO DEL PC"
+Write-Host "DIAGNOSTICO COMPLETO DEL SISTEMA"
 Write-Host "===================================="
 Write-Host ""
 
 # Detectar disco
 $disk = Get-PhysicalDisk | Select-Object -First 1
 
-Write-Host "TIPO DE DISCO DETECTADO:"
+Write-Host "DISCO DETECTADO:"
 Write-Host $disk.FriendlyName "-" $disk.MediaType
 Write-Host ""
 
 if ($disk.MediaType -eq "SSD") {
 
-    Write-Host "Verificando estado TRIM..."
+    Write-Host "Verificando TRIM..."
     $trim = fsutil behavior query DisableDeleteNotify
 
     if ($trim -match "0") {
@@ -27,29 +27,49 @@ if ($disk.MediaType -eq "SSD") {
 }
 else {
 
-    Write-Host "Disco HDD detectado - TRIM no aplica"
+    Write-Host "Disco HDD detectado (TRIM no aplica)"
 }
 
 Write-Host ""
 Write-Host "===================================="
-Write-Host "RECOLECTANDO DATOS DE RENDIMIENTO"
-Write-Host "60 SEGUNDOS DE MUESTRA"
-Write-Host "Espere, por favor ...!!!"
+Write-Host "INFORMACION DE RED"
 Write-Host "===================================="
+
+Get-NetAdapter | Where-Object {$_.Status -eq "Up"} |
+Select Name, InterfaceDescription, LinkSpeed |
+Format-Table
+
 Write-Host ""
+Write-Host "===================================="
+Write-Host "RECOLECTANDO CONTADORES (60 SEG)"
+Write-Host "===================================="
 
 $counters = @(
-'\Processador(_Total)\% tempo de processador',
-'\memória\Bytes disponíveis',
-'\memória\Páginas/s',
-'\memória\Falhas de páginas/s',
-'\PhysicalDisk(_Total)\% tempo de disco',
-'\PhysicalDisk(_Total)\Média de bytes de disco/transferência',
-'\PhysicalDisk(_Total)\Média de bytes de disco/leitura',
-'\PhysicalDisk(_Total)\Média de bytes de disco/gravação'
+'\Processor(_Total)\% Processor Time',
+'\Memory\Available MBytes',
+'\Memory\Pages/sec',
+'\Memory\Page Faults/sec',
+'\PhysicalDisk(_Total)\% Disk Time',
+'\PhysicalDisk(_Total)\Avg. Disk sec/Transfer',
+'\PhysicalDisk(_Total)\Disk Read Bytes/sec',
+'\PhysicalDisk(_Total)\Disk Write Bytes/sec',
+'\Network Interface(*)\Bytes Total/sec'
 )
 
-$data = Get-Counter -Counter $counters -SampleInterval 1 -MaxSamples 60
+# Verificar contadores disponibles
+$validCounters = @()
+
+foreach ($c in $counters) {
+    try {
+        Get-Counter -Counter $c -ErrorAction Stop | Out-Null
+        $validCounters += $c
+    }
+    catch {
+        Write-Host "Contador no disponible:" $c -ForegroundColor Yellow
+    }
+}
+
+$data = Get-Counter -Counter $validCounters -SampleInterval 1 -MaxSamples 60
 
 Write-Host ""
 Write-Host "===================================="
@@ -75,7 +95,6 @@ Minimo = [math]::Round($min,2)
 
 $results | Format-Table -AutoSize
 
-
 Write-Host ""
 Write-Host "===================================="
 Write-Host "ANALISIS AUTOMATICO"
@@ -87,22 +106,20 @@ $pages = ($results | Where-Object {$_.Contador -like "*Pages/sec*"}).Promedio
 $diskLatency = ($results | Where-Object {$_.Contador -like "*Disk sec*"}).Promedio
 $diskUse = ($results | Where-Object {$_.Contador -like "*Disk Time*"}).Promedio
 
-
 if ($cpu -gt 80) { Write-Host "CPU MUY ALTA" -ForegroundColor Red }
 else { Write-Host "CPU NORMAL" -ForegroundColor Green }
 
 if ($ram -lt 1000) { Write-Host "POCA MEMORIA DISPONIBLE" -ForegroundColor Red }
 else { Write-Host "MEMORIA NORMAL" -ForegroundColor Green }
 
-if ($pages -gt 500) { Write-Host "PAGINACION ALTA (FALTA RAM)" -ForegroundColor Yellow }
+if ($pages -gt 500) { Write-Host "PAGINACION ALTA" -ForegroundColor Yellow }
 else { Write-Host "PAGINACION NORMAL" -ForegroundColor Green }
 
 if ($diskLatency -gt 0.05) { Write-Host "LATENCIA DE DISCO ALTA" -ForegroundColor Red }
 else { Write-Host "LATENCIA DE DISCO NORMAL" -ForegroundColor Green }
 
-if ($diskUse -gt 80) { Write-Host "USO DE DISCO MUY ALTO" -ForegroundColor Yellow }
+if ($diskUse -gt 80) { Write-Host "USO DE DISCO ALTO" -ForegroundColor Yellow }
 else { Write-Host "USO DE DISCO NORMAL" -ForegroundColor Green }
-
 
 Write-Host ""
 Write-Host "===================================="
@@ -111,19 +128,39 @@ Write-Host "===================================="
 
 Get-Process |
 Sort-Object IOReadBytes -Descending |
-Select-Object -First 10 Name,IOReadBytes,IOWriteBytes |
+Select -First 10 Name,IOReadBytes,IOWriteBytes |
 Format-Table
-
 
 Write-Host ""
 Write-Host "===================================="
-Write-Host "INFORMACION DEL DISCO"
+Write-Host "CONEXIONES DE RED ACTIVAS"
 Write-Host "===================================="
 
-Get-PhysicalDisk |
-Select FriendlyName,MediaType,Size,HealthStatus |
+Get-NetTCPConnection |
+Select LocalAddress,LocalPort,RemoteAddress,RemotePort,State |
+Sort-Object State |
 Format-Table
 
+Write-Host ""
+Write-Host "===================================="
+Write-Host "PROCESOS CON MAS CONEXIONES"
+Write-Host "===================================="
+
+Get-NetTCPConnection |
+Group-Object OwningProcess |
+Sort-Object Count -Descending |
+Select -First 10 |
+ForEach-Object {
+
+$proc = Get-Process -Id $_.Name -ErrorAction SilentlyContinue
+
+[PSCustomObject]@{
+Proceso = $proc.ProcessName
+PID = $_.Name
+Conexiones = $_.Count
+}
+
+} | Format-Table
 
 Write-Host ""
 Write-Host "===================================="
