@@ -53,7 +53,7 @@ $counters = @(
 '\PhysicalDisk(_Total)\Média de bytes de disco/transferência',
 '\PhysicalDisk(_Total)\Bytes de leitura de disco/s',
 '\PhysicalDisk(_Total)\Bytes de gravação de disco/s',
-'\Network Interface(*)\Total de bytes/s'
+'\Interface de rede(*)\Bytes enviados/s'
 )
 
 # Verificar contadores disponibles
