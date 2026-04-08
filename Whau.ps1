@@ -20,16 +20,17 @@ Clear-Host
 
 Write-Host ("WHAU") 
 Write-Host ("******** HARDWARE ************")
-Write-Host ("Datos de la Placa Base: ")
+Write-Host ("`nDatos de la Placa Base: " ) -ForeGroundColor Yellow
+Write-Host ("{0,-20} {1}" -f "Fabricante: " , $MBoard.Manufacturer) 
+Write-Host ("{0,-20} {1}" -f "Modelo: " , $MBoard.Product) 
 
+Write-Host ("`nDatos del BIOS : ")
 
-Write-Host ("Datos del BIOS : ")
+Write-Host ("`nDatos del CPU :")
 
-Write-Host ("Datos del CPU :")
+Write-Host ("`nDatos de la GPU: ")
 
-Write-Host ("Datos de la GPU: ")
-
-Write-Host ("Datos de la RAM: ")
+Write-Host ("`nDatos de la RAM: ")
 
 Write-Host ("******** SOFTWARE ************")
 Write-Host ("Datos del Sistema Operitvo: ")
