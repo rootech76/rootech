@@ -18,8 +18,8 @@ $OS = Get-cimInstance win32_OperatingSystem
 
 Clear-Host
 
-Write-Host ("WHAU") 
-Write-Host ("******** HARDWARE ************")
+Write-Host ("           WHAU")  -ForeGroundColor DarkRed  
+Write-Host ("`n******** HARDWARE ************")
 Write-Host ("`nDatos de la Placa Base: " ) -ForeGroundColor DarkYellow
 Write-Host ("{0,-20} {1}" -f "Fabricante: " , $MBoard.Manufacturer) 
 Write-Host ("{0,-20} {1}" -f "Modelo: " , $MBoard.Product) 
@@ -35,11 +35,21 @@ Write-Host ("{0,-20} {1}" -f "Nucleos: " , $CPU.NumberOfCores)
 Write-Host ("{0,-20} {1}" -f "Threads: " , $CPU.NumberOfLogicalProcessors) 
 
 Write-Host ("`nDatos de la GPU: ") -ForeGroundColor DarkYellow
+Write-Host ("{0,-20} {1}" -f "Descripción: " , $GPU.name) 
+Write-Host ("{0,-20} {1}" -f "VRAM (GB): " , ($GPU.AdapterRAM / 1GB))
+
+
 
 Write-Host ("`nDatos de la RAM: ") -ForeGroundColor DarkYellow
+Write-Host ("{0,-20} {1}" -f "Fabricante: " , $RAM.Manufacturer) 
+Write-Host ("{0,-20} {1}" -f "Capacidad (GB): " , ($RAM.Capacity / 1GB)) 
+Write-Host ("{0,-20} {1}" -f "Velocidad (MHz): " , $RAM.Speed) 
+Write-Host ("{0,-20} {1}" -f "Tipo: " , $RAM.SMBIOSMemoryType) 
 
-Write-Host ("******** SOFTWARE ************")
-Write-Host ("Datos del Sistema Operitvo: ") -ForeGroundColor DarkYellow
+Write-Host ("`nDatos del Disco: ") -ForeGroundColor DarkYellow
+
+Write-Host ("`n******** SOFTWARE ************")
+Write-Host ("`nDatos del Sistema Operitvo: ") -ForeGroundColor DarkYellow
 
 Write-Host "Precione Enter para Salir: " -NoNewLine -ForeGroundColor Yellow
 Read-Host 
