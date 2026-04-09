@@ -29,6 +29,10 @@ Write-Host ("{0,-20} {1}" -f "Fabricante: " , $BIOS.Manufacturer)
 Write-Host ("{0,-20} {1}" -f "Firmware: " , $BIOS.SMBIOSBIOSVersion) 
 
 Write-Host ("`nDatos del CPU :") -ForeGroundColor DarkYellow 
+Write-Host ("{0,-20} {1}" -f "Fabricante: " , $CPU.Manufacturer) 
+Write-Host ("{0,-20} {1}" -f "Descripción: " , $CPU.name) 
+Write-Host ("{0,-20} {1}" -f "Nucleos: " , $CPU.NumberOfCores) 
+Write-Host ("{0,-20} {1}" -f "Threads: " , $CPU.NumberOfLogicalProcessors) 
 
 Write-Host ("`nDatos de la GPU: ") -ForeGroundColor DarkYellow
 
