@@ -24,8 +24,9 @@ Write-Host ("`nDatos de la Placa Base: " ) -ForeGroundColor DarkYellow
 Write-Host ("{0,-20} {1}" -f "Fabricante: " , $MBoard.Manufacturer) 
 Write-Host ("{0,-20} {1}" -f "Modelo: " , $MBoard.Product) 
 
-Write-Host ("`nDatos del BIOS : ") -ForeGroundColor DarkYellow
-
+Write-Host ("`nDatos de la BIOS : ") -ForeGroundColor DarkYellow
+Write-Host ("{0,-20} {1}" -f "Fabricante: " , $BIOS.Manufacturer) 
+Write-Host ("{0,-20} {1}" -f "Firmware: " , $BIOS.SMBIOSBIOSVersion) 
 
 Write-Host ("`nDatos del CPU :") -ForeGroundColor DarkYellow 
 
