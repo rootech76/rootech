@@ -19,8 +19,8 @@ $OSVersionH = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVers
 
 Clear-Host
 
-Write-Host ("           WHAU")  -ForeGroundColor DarkRed  
-Write-Host ("`n******** HARDWARE ************")
+Write-Host ("                   WHAU")  -ForeGroundColor DarkRed  
+Write-Host ("`n******************* HARDWARE ***************************")
 Write-Host ("`nDatos de la Placa Base: " ) -ForeGroundColor DarkYellow
 Write-Host ("{0,-20} {1}" -f "Fabricante: " , $MBoard.Manufacturer) 
 Write-Host ("{0,-20} {1}" -f "Modelo: " , $MBoard.Product) 
@@ -52,7 +52,7 @@ Write-Host ("{0,-20} {1}" -f "Descripción: " , $Disk.FriendlyName)
 Write-Host ("{0,-20} {1}" -f "Tipo de Conección: " , $Disk.BusType) 
 Write-Host ("{0,-20} {1}" -f "Capacidad (GB): " , [math]::Round($Disk.Size / 1GB,2)) 
 
-Write-Host ("`n******** SOFTWARE ************")
+Write-Host ("`n******************* SOFTWARE ***************************")
 Write-Host ("`nDatos del Sistema Operitvo: ") -ForeGroundColor DarkYellow
 Write-Host ("{0,-20} {1}" -f "Nombre: " , $OS.Caption) 
 Write-Host ("{0,-20} {1}" -f "Build: " , $OS.BuildNumber) 
