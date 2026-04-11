@@ -8,10 +8,11 @@ $CPU = Get-CimInstance win32_Processor
 $BIOS = Get-CimInstance win32_BIOS 
 $GPU = Get-CimInstance win32_Videocontroller
 $RAM = Get-CimInstance win32_PhysicalMemory
-
+$Disk = Get-PhysicalDisk
 #SoftWare ***********************************************************
 
 $OS = Get-cimInstance win32_OperatingSystem
+$OSVersionH = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").DisplayVersion
 
 
 
@@ -47,9 +48,15 @@ Write-Host ("{0,-20} {1}" -f "Velocidad (MHz): " , $RAM.Speed)
 Write-Host ("{0,-20} {1}" -f "Tipo: " , $RAM.SMBIOSMemoryType) 
 
 Write-Host ("`nDatos del Disco: ") -ForeGroundColor DarkYellow
+Write-Host ("{0,-20} {1}" -f "Descripción: " , $Disk.FriendlyName) 
+Write-Host ("{0,-20} {1}" -f "Tipo de Conección: " , $Disk.BusType) 
+Write-Host ("{0,-20} {1}" -f "Capacidad (GB): " , [math]::Round($Disk.Size / 1GB,2)) 
 
 Write-Host ("`n******** SOFTWARE ************")
 Write-Host ("`nDatos del Sistema Operitvo: ") -ForeGroundColor DarkYellow
+Write-Host ("{0,-20} {1}" -f "Nombre: " , $OS.Caption) 
+Write-Host ("{0,-20} {1}" -f "Build: " , $OS.BuildNumber) 
+Write-Host ("{0,-20} {1}" -f "Versión: " , $OSVersionH) 
 
 Write-Host "Precione Enter para Salir: " -NoNewLine -ForeGroundColor Yellow
 Read-Host 
