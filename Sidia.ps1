@@ -29,7 +29,7 @@ switch ($lang){
 
 
 		Get-Counter @("\Processador(_Total)\% Tempo de Processador", "\Processador(_Total)\% Tempo de DPC", 
-		            "\PhysicalDisk(_Total)\% Tempo de Disco","\PhysicalDisk(_Total)\Comprimento da fila de disco atual",  "\PhysicalDisk(_Total)\Leituras de disco/s", "\PhysicalDisk(_Total)\Gravações de disco/s", "\Memória\Bytes disponíveis") -SampleInterval 1 -MaxSamples $Qamos 
+		            "\PhysicalDisk(_Total)\% Tempo de Disco","\PhysicalDisk(_Total)\Comprimento médio da fila de disco",  "\PhysicalDisk(_Total)\Leituras de disco/s", "\PhysicalDisk(_Total)\Gravações de disco/s", "\Memória\Bytes disponíveis") -SampleInterval 1 -MaxSamples $Qamos 
 
 
 
