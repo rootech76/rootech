@@ -11,7 +11,9 @@ switch ($lang){
 
 	}"pt"{
 		Write-Host ("Los Contadoresa serán en portugues") 
-		Get-Counter "\Processador(_Total)\% Tempo de Processador", "\Memória\Bytes disponíveis" -SampleInterval 1 -MaxSamples 5
+		Get-Counter "\Processador(_Total)\% Tempo de Processador", "\Processador(_Total)\% tempo ocioso", "\Processador(_Total)\% Tempo de DPC", 
+		            "\PhysicalDisk(_Total)\Comprimento da fila de disco atual", "\PhysicalDisk(_Total)\% Tempo de Disco", "\PhysicalDisk(_Total)\Leituras de disco/s", "\PhysicalDisk(_Total)\Gravações de disco/s",		
+		"\Memória\Bytes disponíveis" -SampleInterval 1 -MaxSamples 15 
 	
 	}"es"{
 		Write-Host ("Los Contadores serán en Espanhol")
