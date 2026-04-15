@@ -41,16 +41,43 @@ Write-Host ("{0,-20} {1}" -f "VRAM (GB): " , ($GPU.AdapterRAM / 1GB))
 
 
 
+
 Write-Host ("`nDatos de la RAM: ") -ForeGroundColor DarkYellow
-Write-Host ("{0,-20} {1}" -f "Fabricante: " , $RAM.Manufacturer) 
-Write-Host ("{0,-20} {1}" -f "Capacidad (GB): " , ($RAM.Capacity / 1GB)) 
-Write-Host ("{0,-20} {1}" -f "Velocidad (MHz): " , $RAM.Speed) 
-Write-Host ("{0,-20} {1}" -f "Tipo: " , $RAM.SMBIOSMemoryType) 
+
+$cont = 1
+foreach($Modulo in $RAM){
+    Write-Host "`nModulo $cont :" -ForegroundColor Cyan
+    
+    Write-Host ("{0,-20} {1}" -f "Fabricante:", $Modulo.Manufacturer)
+    Write-Host ("{0,-20} {1}" -f "Capacidad (GB):", [math]::Round($Modulo.Capacity / 1GB,2))
+    Write-Host ("{0,-20} {1}" -f "Velocidad (MHz):", $Modulo.Speed)
+    Write-Host ("{0,-20} {1}" -f "Tipo:", $Modulo.SMBIOSMemoryType)
+
+    $cont++
+}
+
+# Total RAM
+$totalRAM = ($RAM | Measure-Object -Property Capacity -Sum).Sum
+Write-Host ("`n{0,-20} {1}" -f "RAM Total (GB):", [math]::Round($totalRAM / 1GB,2)) -ForegroundColor Green
+
+
+
 
 Write-Host ("`nDatos del Disco: ") -ForeGroundColor DarkYellow
-Write-Host ("{0,-20} {1}" -f "Descripción: " , $Disk.FriendlyName) 
-Write-Host ("{0,-20} {1}" -f "Tipo de Conección: " , $Disk.BusType) 
-Write-Host ("{0,-20} {1}" -f "Capacidad (GB): " , [math]::Round($Disk.Size / 1GB,2)) 
+
+$cont = 1
+foreach($D in $Disk){
+    Write-Host "`nDisco $cont :" -ForegroundColor Cyan
+    
+    Write-Host ("{0,-20} {1}" -f "Nombre:", $D.FriendlyName)
+    Write-Host ("{0,-20} {1}" -f "Tipo:", $D.MediaType)
+    Write-Host ("{0,-20} {1}" -f "Bus:", $D.BusType)
+    Write-Host ("{0,-20} {1}" -f "Capacidad (GB):", [math]::Round($D.Size / 1GB,2))
+
+    $cont++
+}
+
+
 
 Write-Host ("`n******************* SOFTWARE ***************************")
 Write-Host ("`nDatos del Sistema Operitvo: ") -ForeGroundColor DarkYellow
