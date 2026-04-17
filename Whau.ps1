@@ -44,6 +44,47 @@ Write-Host ("{0,-20} {1}" -f "VRAM (GB): " , ($GPU.AdapterRAM / 1GB))
 
 Write-Host ("`nDatos de la RAM: ") -ForeGroundColor DarkYellow
 
+$SMBIOSMap = @{
+20 = "DDR"
+21 = "DDR2"
+24 = "DDR3"
+26 = "DDR4"
+30 = "LPDDR4"
+}
+
+function Get-RAMTipo {
+    param($mod)
+
+    # 1. Intentar con SMBIOS
+    $tipo = $SMBIOSMap[$mod.SMBIOSMemoryType]
+
+    if($tipo){
+        return $tipo
+    }
+
+    # 2. Intentar con MemoryType
+    switch ($mod.MemoryType) {
+        20 { return "DDR" }
+        21 { return "DDR2" }
+        24 { return "DDR3" }
+        26 { return "DDR4" }
+    }
+
+    # 3. Deducción por velocidad (fallback PRO)
+    $vel = $mod.Speed
+    if(-not $vel){ $vel = $mod.ConfiguredClockSpeed }
+
+    if($vel){
+        if($vel -ge 4800){ return "DDR5" }
+        elseif($vel -ge 2133){ return "DDR4" }
+        elseif($vel -ge 800){ return "DDR3" }
+        elseif($vel -ge 400){ return "DDR2" }
+    }
+
+    return "Desconocido"
+}
+
+
 $cont = 1
 foreach($Modulo in $RAM){
     Write-Host "`nModulo $cont :" -ForegroundColor Cyan
@@ -51,7 +92,9 @@ foreach($Modulo in $RAM){
     Write-Host ("{0,-20} {1}" -f "Fabricante:", $Modulo.Manufacturer)
     Write-Host ("{0,-20} {1}" -f "Capacidad (GB):", [math]::Round($Modulo.Capacity / 1GB,2))
     Write-Host ("{0,-20} {1}" -f "Velocidad (MHz):", $Modulo.Speed)
-    Write-Host ("{0,-20} {1}" -f "Tipo:", $Modulo.SMBIOSMemoryType)
+
+    $tipo = Get-RAMTipo $Modulo
+    Write-Host ("{0,-20} {1}" -f "Tipo:", $tipo)
 
     $cont++
 }
